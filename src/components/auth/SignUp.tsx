@@ -25,9 +25,7 @@ const SignUp = () => {
       password,
     }
 
-    const res = await auth.signUp(data);
-
-
+    await auth.signUp(data);
 
     setName("");
     setEmail("");
