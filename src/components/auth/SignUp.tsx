@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Auth } from "@/api/actions/auth";
 
 const SignUp = () => {
   const [name, setName] = useState<string>("");
@@ -8,8 +9,29 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const auth = new Auth()
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (password!== confirmPassword) {
+      alert("Пароли не совпадают");
+      return;
+    }
+
+    const data = {
+      name,
+      email,
+      password,
+    }
+
+    await auth.signUp(data);
+
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+
     console.log(name, email, password, confirmPassword);
   };
 
