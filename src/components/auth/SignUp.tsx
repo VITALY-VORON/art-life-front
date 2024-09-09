@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Auth } from "@/api/actions/auth";
+import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const SignUp = () => {
   const [name, setName] = useState<string>("");
@@ -9,13 +11,17 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const auth = new Auth()
+  const [passError, setPassError] = useState<boolean>(false);
+
+  const auth = new Auth();
+  const navigate = useNavigate();
+  const { setData } = useLocalStorage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password!== confirmPassword) {
-      alert("Пароли не совпадают");
+    if (password !== confirmPassword) {
+      setPassError(prev => !prev)
       return;
     }
 
@@ -23,9 +29,14 @@ const SignUp = () => {
       name,
       email,
       password,
-    }
+    };
 
-    await auth.signUp(data);
+    const res = await auth.signUp(data);
+
+    if ((_id: string) => res) {
+      navigate("/main/1");
+      setData({ name: "user", value: { res } });
+    }
 
     setName("");
     setEmail("");
@@ -65,26 +76,33 @@ const SignUp = () => {
             type="email"
             id="email"
             value={email}
+            onError={() => console.log("err")}
             onChange={e => setEmail(e.target.value)}
             required
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="password">Пароль</label>
+          {passError ? <div>
+            <span className="text-red-400">Пароли не совпадают</span>
+          </div> : <label htmlFor="password">Пароль</label>}
           <Input
             type="password"
             id="password"
             value={password}
+            className={passError ? "border-2 border-solid border-red-400" : ""}
             onChange={e => setPassword(e.target.value)}
             required
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="password">Подтверждение пароля</label>
+        {passError ? <div>
+            <span className="text-red-400">Пароли не совпадают</span>
+          </div> : <label htmlFor="password">Подтверждени пароля</label>}
           <Input
             type="password"
             id="confirmPassword"
             value={confirmPassword}
+            className={passError ? "border-2 border-solid border-red-400" : ""}
             onChange={e => setConfirmPassword(e.target.value)}
             required
           />

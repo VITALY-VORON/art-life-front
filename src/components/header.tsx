@@ -1,61 +1,17 @@
-import { AuthHeader, PreviewHeader, UserHeader } from "@/lib/enums";
-import { TAuthHeader, TPreviewHeader, TUserHeader } from "@/lib/types";
-import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
-type Props = {
-  type: "Auth" | "preview" | "user";
-};
+import i1 from "../assets/iconamoon_profile.png";
 
-export const Header = ({ type }: Props) => {
-  const [headerData, setHeaderData] = useState<
-    TPreviewHeader | TAuthHeader | TUserHeader | null
-  >(null);
-
-  useEffect(() => {
-    if (type === "Auth") setHeaderData(AuthHeader);
-    else if (type === "preview") setHeaderData(PreviewHeader);
-    else if (type === "user") setHeaderData(UserHeader);
-  }, [type]);
-
-  const renderHeader = () => {
-    if (headerData) {
-      return Object.values(headerData).map((headerItem, index, array) => {
-        let variant:
-          | "link"
-          | "default"
-          | "destructive"
-          | "outline"
-          | "secondary"
-          | "ghost"
-          | null = "link";
-
-        if (type === "Auth") {
-          variant = "default";
-        } else if (type === "preview" && index === array.length - 1) {
-          variant = "default";
-        } else if (type === "user" && index === 1) {
-          variant = "default";
-        }
-
-        return (
-          <Button variant={variant} className="mr-5" key={headerItem}>
-            <span
-              style={{
-                fontWeight: 400,
-                fontSize: 16,
-              }}
-            ></span>
-            {headerItem}
-          </Button>
-        );
-      });
-    }
-    return null;
-  };
-
+const InicialHeader = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex py-3 items-center px-24 bg-white shadow-xl">
+    <div className="flex py-3 justify-around items-center px-24 bg-white shadow-xl">
       <span
         style={{
           fontFamily: "Montserrat Alternates",
@@ -65,7 +21,112 @@ export const Header = ({ type }: Props) => {
       >
         ArtLife
       </span>
-      <div className="ml-auto">{renderHeader()}</div>
+      {children}
     </div>
   );
 };
+
+const AuthHeaderComponent = () => {
+  return (
+    <InicialHeader>
+      <div className="flex gap-3">
+        <Button variant={"default"}>
+          <Link to={"/auth/sign-in"}>
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: 16,
+              }}
+            >
+              Войти
+            </span>
+          </Link>
+        </Button>
+        <Button variant={"default"}>
+          <Link to={"/auth/sign-up"}>
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: 16,
+              }}
+            >
+              Зарегистрироваться
+            </span>
+          </Link>
+        </Button>
+      </div>
+    </InicialHeader>
+  );
+};
+
+const PreviewHeaderComponent = () => {
+  return (
+    <InicialHeader>
+      <div>
+        <Button variant={"link"}>
+          <Link to={""}>
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: 16,
+              }}
+            >
+              Как это работает
+            </span>
+          </Link>
+        </Button>
+        <Button variant={"link"}>
+          <Link to={""}>
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: 16,
+              }}
+            >
+              Специализация
+            </span>
+          </Link>
+        </Button>
+        <Button variant={"default"}>
+          <Link to={"/auth/sign-in"}>
+            <span
+              style={{
+                fontWeight: 400,
+                fontSize: 16,
+              }}
+            >
+              Войти
+            </span>
+          </Link>
+        </Button>
+      </div>
+    </InicialHeader>
+  );
+};
+
+const MainHeaderComponent = () => {
+  return (
+    <InicialHeader>
+      <div className="flex">
+        <Button variant={"link"}>Мои проекты</Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className="bg-[#10C3EB] px-2 py-1 rounded-xl text-white outline-none flex items-center justify-center"
+            style={{
+              fontSize: 16,
+              fontWeight: 600,
+            }}
+          >
+            <img src={i1} alt="" />Профиль
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>Настройки</DropdownMenuItem>
+            <DropdownMenuItem>Выйти</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </InicialHeader>
+  );
+};
+
+export { PreviewHeaderComponent, MainHeaderComponent, AuthHeaderComponent };

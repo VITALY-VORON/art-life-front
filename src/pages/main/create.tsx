@@ -9,6 +9,12 @@ const Create = () => {
       >
         Создание структуры и контента
       </span>
+      <span style={{
+        fontWeight: 600,
+        fontSize: 20,
+      }}>
+        Страницы меню
+      </span>
     </div>
   );
 };

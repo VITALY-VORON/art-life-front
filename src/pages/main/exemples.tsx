@@ -2,6 +2,7 @@ import { MainForm } from "@/components/main/form";
 
 import i1 from "../../assets/Group 35.png";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Exemples = () => {
   return (
@@ -25,14 +26,16 @@ const Exemples = () => {
       </div>
 
       <Button className="bg-[#10C3EB] w-32">
-        <span
-          style={{
-            fontWeight: 400,
-            fontSize: 16,
-          }}
-        >
-          Далее
-        </span>
+        <Link to={"/main/2"}>
+          <span
+            style={{
+              fontWeight: 400,
+              fontSize: 16,
+            }}
+          >
+            Далее
+          </span>
+        </Link>
       </Button>
     </div>
   );

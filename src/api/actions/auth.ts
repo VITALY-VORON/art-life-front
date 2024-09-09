@@ -7,12 +7,15 @@ import {
 import { customAxios } from "../axios";
 
 export class Auth implements IAuthService {
+
   async signIn(data: IBaseUser): Promise<{ id: string }> {
-    return await customAxios.post("auth/sign-in", data);
+    return (await customAxios.post("auth/sign-in", data)).data;
   }
+
   async signUp(data: ICreateUser): Promise<{ id: string }> {
-    return await customAxios.post("auth/sign-up", data);
+    return (await customAxios.post("auth/sign-up", data)).data;
   }
+
   async me(id: string): Promise<TUser> {
     return await customAxios.get(`user/${id}`);
   }

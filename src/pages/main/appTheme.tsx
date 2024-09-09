@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 
 import i1 from "../../assets/Group 32.png";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const AppTheme = () => {
   return (
@@ -94,14 +95,16 @@ const AppTheme = () => {
         </span>
       </div>
       <Button className="bg-[#10C3EB] w-32">
-        <span
-          style={{
-            fontWeight: 400,
-            fontSize: 16,
-          }}
-        >
-          Далее
-        </span>
+        <Link to={"/main/4"}>
+          <span
+            style={{
+              fontWeight: 400,
+              fontSize: 16,
+            }}
+          >
+            Далее
+          </span>
+        </Link>
       </Button>
     </div>
   );

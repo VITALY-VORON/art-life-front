@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 const FooterStttings = () => {
   return (
@@ -111,14 +112,16 @@ const FooterStttings = () => {
       </div>
 
       <Button className="bg-[#10C3EB] w-32">
-        <span
-          style={{
-            fontWeight: 400,
-            fontSize: 16,
-          }}
-        >
-          Далее
-        </span>
+        <Link to={'/main/6'}>
+          <span
+            style={{
+              fontWeight: 400,
+              fontSize: 16,
+            }}
+          >
+            Далее
+          </span>
+        </Link>
       </Button>
     </div>
   );

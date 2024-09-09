@@ -3,12 +3,18 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Auth } from "@/api/actions/auth";
 import { IBaseUser } from "@/api/actions/interface/auth.service.interface";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const SignIn = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const auth = new Auth();
+  const isAuth = useAuth();
+  const navigate = useNavigate();
+  const { setData } = useLocalStorage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,10 +22,19 @@ const SignIn = () => {
       email,
       password,
     };
-    await auth.signIn(data);
+    const res = await auth.signIn(data);
+    if ((_id: string) => res) {
+      isAuth.setIsAuth(true);
+      navigate("/main/1");
+      setData({
+        name: "user",
+        value: {
+          res,
+        },
+      });
+    }
     setEmail("");
     setPassword("");
-    console.log(email, password);
   };
 
   return (
