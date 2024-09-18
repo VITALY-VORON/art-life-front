@@ -4,7 +4,7 @@ type TLocalStorage = {
 }
 
 export const useLocalStorage = () => {
-    const setData = (data: TLocalStorage) => {
+    const setData = (p0: string, data: TLocalStorage) => {
         try {
             localStorage.setItem(data.name, JSON.stringify(data.value));
         } catch (error) {

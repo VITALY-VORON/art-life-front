@@ -1,8 +1,31 @@
+import React, { useState } from "react";
+import BottomPanelSettingsForm from "@/components/main/bottom.panel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 
-const FooterStttings = () => {
+type ButtonField = {
+  id: number;
+  type: string;
+  value: string;
+  icon?: File | null;
+};
+
+const FooterSettings: React.FC = () => {
+  const [removeBottomPanel, setRemoveBottomPanel] = useState(false);
+  const [panelColor, setPanelColor] = useState<string>("");
+  const [iconTextColor, setIconTextColor] = useState<string>("");
+
+  const handleFormSubmit = (formData: { buttons: ButtonField[] }) => {
+    const fullFormData = {
+      removeBottomPanel,
+      panelColor,
+      iconTextColor,
+      buttons: formData.buttons,
+    };
+    console.log("Received form data:", fullFormData);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       <span
@@ -21,6 +44,8 @@ const FooterStttings = () => {
             width: 19,
             height: 19,
           }}
+          checked={removeBottomPanel}
+          onChange={(e) => setRemoveBottomPanel(e.target.checked)}
         />
         <span
           style={{
@@ -40,7 +65,11 @@ const FooterStttings = () => {
       >
         Цвет панели
       </span>
-      <Input />
+      <Input
+        type="text"
+        value={panelColor}
+        onChange={(e) => setPanelColor(e.target.value)}
+      />
 
       <span
         style={{
@@ -50,7 +79,12 @@ const FooterStttings = () => {
       >
         Цвет иконок и текста
       </span>
-      <Input />
+      <Input
+        type="text"
+        value={iconTextColor}
+        onChange={(e) => setIconTextColor(e.target.value)}
+      />
+
       <span
         style={{
           fontWeight: 600,
@@ -60,59 +94,10 @@ const FooterStttings = () => {
         Кнопки
       </span>
 
-      <div className="flex flex-col gap-3 bg-white p-5 rounded-3xl">
+      <BottomPanelSettingsForm onFormSubmit={handleFormSubmit} />
 
-        <div className="flex border border-b-2 border-x-0 border-t-0 pb-3 items-center">
-          <span style={{
-            fontWeight: 400,
-            fontSize: 16,
-          }}>Кнопка телефон</span>
-
-          <Button variant={"ghost"} className="h-[24px] w-[24px] flex justify-center items-center">
-            <span style={{
-              fontWeight: 600,
-              fontSize: 30,
-            }}>+</span>
-          </Button>
-        </div>
-
-        <div className="flex flex-col gap-3">
-
-          <span style={{
-            fontWeight: 400,
-            fontSize: 16,
-          }}>
-            Тип кнопки
-          </span>
-          <Input />
-
-          <span style={{
-            fontWeight: 400,
-            fontSize: 16,
-          }}>
-            Телефон
-          </span>
-          <Input />
-          <span style={{
-            fontWeight: 400,
-            fontSize: 11,
-          }}>
-          По этому телефону с Вами смогут связаться, нажав данную кнопку и перейдя в приложение
-          </span>
-
-          <span style={{
-            fontWeight: 400,
-            fontSize: 16,
-          }}>
-            Подпись
-          </span>
-          <Input />
-
-        </div>
-      </div>
-
-      <Button className="bg-[#10C3EB] w-32">
-        <Link to={'/main/6'}>
+      <Button className="bg-[#10C3EB] w-32 mb-3">
+        <Link to={"/main/6"}>
           <span
             style={{
               fontWeight: 400,
@@ -127,4 +112,4 @@ const FooterStttings = () => {
   );
 };
 
-export default FooterStttings;
+export default FooterSettings;

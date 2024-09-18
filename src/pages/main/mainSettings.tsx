@@ -1,24 +1,31 @@
 import { Input } from "@/components/ui/input";
-
-import i1 from "../../assets/Group 32.png";
+import i1 from "../../assets/Group 32.png"; 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import useMainSettingsStore from "@/store/mainSettings.store";
+import { useState, useRef } from "react";
 
 const MainSettings = () => {
   const [name, setName] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-  const [icon, setIcon] = useState<string>("");
+  const [icon, setIcon] = useState<File | null>(null);
   const [isIcon, setIsIcon] = useState<boolean>(false);
 
-  const { setSettingsData } = useMainSettingsStore();
+  const AppName = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value);
+  const AppTitle = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
+  const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setIcon(e.target.files[0]);
+    }
+  };
 
-  const AppName = (e: any) => setName(e.target.value);
-  const AppTitle = (e: any) => setTitle(e.target.value);
+  const handleNextClick = () => {
+    
+  };
 
-  const saveSettings = () => {
-    setSettingsData(name, title, icon, isIcon);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleIconClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -39,7 +46,7 @@ const MainSettings = () => {
       >
         Название приложения
       </span>
-      <Input value={name} onChange={e => AppName(e)} />
+      <Input value={name} onChange={AppName} />
       <span
         style={{
           fontWeight: 400,
@@ -48,23 +55,29 @@ const MainSettings = () => {
       >
         Заголовок приложения
       </span>
-      <Input value={title} onChange={e => AppTitle(e)} />
+      <Input value={title} onChange={AppTitle} />
       <span
         style={{
           fontWeight: 400,
           fontSize: 16,
         }}
       >
-        Заголовок приложения
+        Иконка приложения
       </span>
+      <div className="flex justify-center items-center w-[150px] h-[150px] border-none outline-none">
+        {icon ? (
+          <img src={URL.createObjectURL(icon)} alt="Uploaded Icon" />
+        ) : (
+          <img src={i1} alt="Default Icon" />
+        )}
+      </div>
       <Input
         type="file"
-        className="flex justify-center items-center w-[150px] h-[150px] border-none outline-none"
-        alt=""
-        src=""
-      >
-        <img src={i1} />
-      </Input>
+        ref={fileInputRef}
+        onChange={handleIconChange}
+        accept="image/*"
+      />
+      <Button onClick={handleIconClick}>Выбрать иконку</Button>
       <div className="flex gap-3 justify-center items-center">
         <Input
           type="checkbox"
@@ -84,7 +97,7 @@ const MainSettings = () => {
           Возможность показывать иконку в шапке (галочка)
         </span>
       </div>
-      <Button className="bg-[#10C3EB] w-32" onClick={saveSettings}>
+      <Button className="bg-[#10C3EB] w-32 mb-3" onClick={handleNextClick}> 
         <Link to={"/main/3"}>
           <span
             style={{

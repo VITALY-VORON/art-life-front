@@ -5,8 +5,14 @@ import Go from "@/components/preview/go";
 import How from "@/components/preview/how";
 import Spec from "@/components/preview/spec";
 import Uns from "@/components/preview/uns";
+import { useEffect } from "react";
 
 const Preview = () => {
+
+    useEffect(() => {
+        localStorage.removeItem("user")
+    }, [])
+
     return ( 
         <div className="min-h-screen flex flex-col">
             <PreviewHeaderComponent />
